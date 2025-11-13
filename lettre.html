@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Lettre pour Maman 💌</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Open+Sans&display=swap');
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #fff0f6, #ffe6f0);
+      font-family: 'Open Sans', sans-serif;
+      color: #333;
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      color: #d63384;
+      font-size: 2.2rem;
+      margin-bottom: 30px;
+      z-index: 1;
+    }
+
+    .envelope {
+      font-size: 4rem;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      z-index: 1;
+    }
+
+    .envelope:hover {
+      transform: scale(1.1);
+    }
+
+    .letter {
+      position: relative;
+      max-width: 600px;
+      background: #fffaf9;
+      border: 1px solid #f3d4d4;
+      border-radius: 12px;
+      padding: 30px 40px;
+      margin-top: 30px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1.2s ease, transform 1.2s ease;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      text-align: left;
+      background-image: repeating-linear-gradient(#fffaf9, #fffaf9 28px, #ffe6f0 29px);
+      z-index: 1;
+    }
+
+    .letter.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .signature {
+      margin-top: 20px;
+      text-align: right;
+      font-style: italic;
+      color: #d63384;
+    }
+
+    .back-btn {
+      margin-top: 40px;
+      display: inline-block;
+      background: #d63384;
+      color: white;
+      text-decoration: none;
+      padding: 10px 22px;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+      z-index: 1;
+    }
+
+    .back-btn:hover {
+      background: #b72b6c;
+    }
+
+    #music-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(214, 51, 132, 0.9);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 1.4rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: background 0.3s ease, transform 0.2s ease;
+      z-index: 100;
+    }
+
+    #music-btn:hover {
+      background: rgba(183, 43, 108, 0.95);
+      transform: scale(1.05);
+    }
+
+    #petals {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #texte-lettre {
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Une lettre pour toi, Maman 💌</h1>
+
+  <div class="envelope" id="openLetter">💌</div>
+
+  <div class="letter" id="letterContent">
+    <p id="texte-lettre">
+Chère Maman,
+
+Il y a tant de choses que je n’ai jamais su te dire à voix haute.  
+Merci pour ta douceur, ta patience, et pour tous les petits gestes qui ont construit qui je suis aujourd’hui.
+
+Chaque souvenir avec toi me rappelle que l’amour, le vrai, ne se dit pas toujours : il se montre, jour après jour, avec le cœur.
+
+Je t’aime, tout simplement. 💖
+
+— [Ton prénom]
+    </p>
+  </div>
+
+  <a class="back-btn" href="index.html">← Retour à la page principale</a>
+
+  <!-- 🎧 Musique de fond -->
+  <audio id="bg-music" loop>
+    <source src="musique.mp3" type="audio/mpeg">
+    Votre navigateur ne supporte pas la lecture audio.
+  </audio>
+
+  <button id="music-btn" title="Couper la musique">🔇</button>
+
+  <canvas id="petals"></canvas>
+
+  <script>
+    const envelope = document.getElementById('openLetter');
+    const letter = document.getElementById('letterContent');
+    const textElement = document.getElementById('texte-lettre');
+    const fullText = textElement.innerHTML;
+
+    textElement.innerHTML = "";
+
+    envelope.addEventListener('click', () => {
+      letter.classList.add('show');
+      envelope.style.display = 'none';
+      typeWriter(); // démarre l’écriture
+    });
+
+    let index = 0;
+    function typeWriter() {
+      if (index < fullText.length) {
+        textElement.innerHTML += fullText.charAt(index);
+        index++;
+        setTimeout(typeWriter, 35);
+      }
+    }
+
+    // 🎵 Musique auto et bouton
+    const music = document.getElementById('bg-music');
+    const btn = document.getElementById('music-btn');
+    let isPlaying = false;
+
+    window.addEventListener('load', async () => {
+      try {
+        await music.play();
+        isPlaying = true;
+        btn.textContent = '🔇';
+        btn.title = "Couper la musique";
+      } catch (err) {
+        console.log('Autoplay bloqué : attend un clic pour démarrer.');
+        document.body.addEventListener('click', startMusicOnce, { once: true });
+        btn.textContent = '🎵';
+        btn.title = "Activer la musique";
+      }
+    });
+
+    function startMusicOnce() {
+      music.play();
+      isPlaying = true;
+      btn.textContent = '🔇';
+      btn.title = "Couper la musique";
+    }
+
+    btn.addEventListener('click', () => {
+      if (isPlaying) {
+        music.pause();
+        btn.textContent = '🎵';
+        btn.title = "Activer la musique";
+      } else {
+        music.play();
+        btn.textContent = '🔇';
+        btn.title = "Couper la musique";
+      }
+      isPlaying = !isPlaying;
+    });
+
+    // 🌸 Pétales doux
+    const canvas = document.getElementById("petals");
+    const ctx = canvas.getContext("2d");
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    const petals = [];
+    const numPetals = 50;
+
+    for (let i = 0; i < numPetals; i++) {
+      petals.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 6 + 3,
+        speedY: Math.random() * 0.8 + 0.3,
+        speedX: Math.random() * 0.6 - 0.3,
+        opacity: Math.random() * 0.5 + 0.4,
+        rotation: Math.random() * 360,
+        rotationSpeed: Math.random() * 2 - 1
+      });
+    }
+
+    function drawPetals() {
+      ctx.clearRect(0, 0, width, height);
+      for (const p of petals) {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, p.size * 1.5);
+        gradient.addColorStop(0, `rgba(255, 182, 193, ${p.opacity + 0.3})`);
+        gradient.addColorStop(1, `rgba(255, 182, 193, 0)`);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, p.size, p.size / 1.8, 0, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+        ctx.restore();
+        p.y += p.speedY;
+        p.x += p.speedX;
+        p.rotation += p.rotationSpeed;
+        if (p.y > height + 10) {
+          p.y = -10;
+          p.x = Math.random() * width;
+        }
+      }
+      requestAnimationFrame(drawPetals);
+    }
+
+    drawPetals();
+
+    window.addEventListener("resize", () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    });
+  </script>
+</body>
+</html>
