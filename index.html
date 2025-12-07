@@ -108,23 +108,23 @@
   <header>Pour Maman 💖</header>
   <p class="intro">
     Maman, ce petit site est un cadeau pour te dire merci.  
-    Merci pour ton amour, ta force et ton rire qui rend tout plus beau.
+    Merci pour tout ce que tu m'as donné jusqu'a maintenant.
   </p>
 
   <section class="gallery">
     <div class="photo">
       <img src="photo1.jpg" alt="Photo souvenir 1">
-      <div class="caption">Un moment inoubliable ❤️</div>
+      <div class="caption">Avant que je parte pour une nouvelle aventure ❤️</div>
     </div>
 
     <div class="photo">
       <img src="photo2.jpg" alt="Photo souvenir 2">
-      <div class="caption">Toujours ensemble, quoi qu’il arrive.</div>
+      <div class="caption">C'était un bon repas en rentrant de l'ile de Ré 😊 </div>
     </div>
 
     <div class="photo">
       <img src="photo3.jpg" alt="Photo souvenir 3">
-      <div class="caption">Merci pour tout ce que tu es.</div>
+      <div class="caption">On oublie jamais la famille avec un grand sourire ❤️</div>
     </div>
   </section>
       <a href="souvenirs.html" class="btn">Voir la frise de souvenirs 📸</a>
@@ -134,55 +134,8 @@
     Fait avec tout mon amour 💕 — Ton tout petit enfant qui grandit
   </footer>
   <!-- 🎧 Musique de fond -->
-<audio id="bg-music" loop>
-  <source src="musique.mp3" type="audio/mpeg">
-  Votre navigateur ne supporte pas la lecture audio.
-</audio>
 
-<button id="music-btn" title="Couper la musique">🔇</button>
 
-<script>
-  const music = document.getElementById('bg-music');
-  const btn = document.getElementById('music-btn');
-  let isPlaying = false;
-
-  // Essaie de lancer automatiquement dès que possible
-  window.addEventListener('load', async () => {
-    try {
-      await music.play();
-      isPlaying = true;
-      btn.textContent = '🔇';
-      btn.title = "Couper la musique";
-    } catch (err) {
-      // Autoplay bloqué → attend interaction utilisateur
-      console.log('Autoplay bloqué : attend un clic pour démarrer.');
-      document.body.addEventListener('click', startMusicOnce, { once: true });
-      btn.textContent = '🎵';
-      btn.title = "Activer la musique";
-    }
-  });
-
-  function startMusicOnce() {
-    music.play();
-    isPlaying = true;
-    btn.textContent = '🔇';
-    btn.title = "Couper la musique";
-  }
-
-  // Bouton de contrôle
-  btn.addEventListener('click', () => {
-    if (isPlaying) {
-      music.pause();
-      btn.textContent = '🎵';
-      btn.title = "Activer la musique";
-    } else {
-      music.play();
-      btn.textContent = '🔇';
-      btn.title = "Couper la musique";
-    }
-    isPlaying = !isPlaying;
-  });
-</script>
 
 <style>
   #music-btn {
