@@ -4,316 +4,302 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pour Maman 💖</title>
- 
- <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Open+Sans&display=swap');
-    
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans:wght@400;600&display=swap');
+
+    :root {
+      --primary: #d63384;
+      --secondary: #f8bbd0;
+      --bg: #fff5f8;
+      --text: #4a4a4a;
+    }
+
+    /* --- EFFET D'OUVERTURE --- */
     body {
       margin: 0;
+      padding: 0;
       font-family: 'Open Sans', sans-serif;
-      background: linear-gradient(180deg, #fff0f6, #ffe6f0);
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      background: linear-gradient(135deg, #fff0f6 0%, #ffe6f0 100%);
+      color: var(--text);
+      overflow-x: hidden;
+      opacity: 0;
+      animation: pageIn 1.5s ease-out forwards;
+    }
+
+    @keyframes pageIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- LAYOUT --- */
+    .hero {
+      padding: 80px 20px 40px;
+      max-width: 800px;
+      margin: 0 auto;
       text-align: center;
-      min-height: 100vh;
     }
 
     header {
-      margin-top: 60px;
       font-family: 'Playfair Display', serif;
-      font-size: 2.5rem;
-      color: #d63384;
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      background: linear-gradient(to right, #d63384, #ff85a1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
     }
 
     p.intro {
-      max-width: 600px;
-      margin: 20px;
-      font-size: 1.2rem;
-      color: #555;
+      font-size: 1.25rem;
+      line-height: 1.6;
+      color: #6d6d6d;
+      margin-bottom: 40px;
     }
 
+    /* --- GALERIE AMÉLIORÉE --- */
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1100px;
+      margin: 0 auto 50px;
+      padding: 0 30px;
     }
-.btn {
-  display: inline-block;
-  background: #d63384; /* rose principal */
-  color: white;
-  padding: 12px 20px;
-  margin-top: 20px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 0 rgba(214, 51, 132, 0); /* base sans halo */
-}
 
-.btn:hover {
-  background: #b82e72;
-  transform: scale(1.03) rotate(0.5deg);
-  box-shadow: 0 0 15px rgba(214, 51, 132, 0.6); /* halo doux */
-  animation: pulse 0.8s ease-in-out;
-}
-
-/* Animation légère de "battement" */
-@keyframes pulse {
-  0% { transform: scale(1.03) rotate(0.5deg); }
-  50% { transform: scale(1.06) rotate(-0.5deg); }
-  100% { transform: scale(1.03) rotate(0.5deg); }
-}
-
-
-
-    .photo {
+    .photo-card {
       background: white;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      overflow: hidden;
-      transition: transform 0.3s;
+      padding: 12px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(214, 51, 132, 0.1);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      z-index: 1;
     }
 
-    .photo:hover {
-      transform: scale(1.02);
+    .photo-card:hover {
+      transform: translateY(-10px) rotate(1deg);
+      box-shadow: 0 15px 45px rgba(214, 51, 132, 0.2);
     }
 
-    .photo img {
+    .photo-card img {
       width: 100%;
-      height: 220px;
+      height: 250px;
       object-fit: cover;
+      border-radius: 15px;
+      cursor: zoom-in;
     }
 
     .caption {
-      padding: 15px;
+      padding: 20px 10px;
       font-style: italic;
-      color: #666;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: #d63384;
+    }
+
+    /* --- BOUTONS --- */
+    .cta-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 80px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      color: var(--primary);
+      padding: 16px 32px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      border: 2px solid var(--primary);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(214, 51, 132, 0.1);
+    }
+
+    .btn-solid {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(214, 51, 132, 0.3);
+    }
+
+    .btn-solid:hover {
+      background: #b82e72;
     }
 
     footer {
-      margin: 60px 0 20px 0;
-      font-size: 1rem;
-      color: #888;
+      padding: 40px 20px;
+      font-size: 0.9rem;
+      color: #a0a0a0;
+      border-top: 1px solid rgba(214, 51, 132, 0.1);
+      width: 100%;
+      background: rgba(255, 255, 255, 0.3);
+      text-align: center; /* Centrage horizontal */
     }
+
+    /* --- PETALS CANVAS --- */
+    #petals {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* --- LIGHTBOX --- */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    #lightbox.visible { opacity: 1; pointer-events: all; }
+    
+    #lightbox-img {
+      max-width: 85%;
+      max-height: 75vh;
+      border: 5px solid white;
+      border-radius: 10px;
+      transform: scale(0.9);
+      transition: transform 0.4s ease;
+    }
+
+    #lightbox.visible #lightbox-img { transform: scale(1); }
+
+    .hidden { display: none; }
   </style>
 </head>
-
 <body>
-  
-  <header>Pour Maman 💖</header>
-  <p class="intro">
-    Maman, ce petit site est un cadeau pour te dire merci.  
-    Merci pour tout ce que tu m'as donné jusqu'a maintenant.
-  </p>
+
+  <canvas id="petals"></canvas>
+
+  <section class="hero">
+    <header>Pour Maman 💖</header>
+    <p class="intro">
+      Maman, ce petit site est un cadeau pour te dire merci. <br>
+      Merci pour tout ce que tu m'as donné jusqu'à maintenant.
+    </p>
+  </section>
 
   <section class="gallery">
-    <div class="photo">
+    <div class="photo-card">
       <img src="photo1.jpg" alt="Photo souvenir 1">
       <div class="caption">Avant que je parte pour une nouvelle aventure ❤️</div>
     </div>
 
-    <div class="photo">
+    <div class="photo-card">
       <img src="photo2.jpg" alt="Photo souvenir 2">
-      <div class="caption">C'était un bon repas en rentrant de l'ile de Ré 😊 </div>
+      <div class="caption">C'était un bon repas en rentrant de l'ile de Ré 😊</div>
     </div>
 
-    <div class="photo">
+    <div class="photo-card">
       <img src="photo3.jpg" alt="Photo souvenir 3">
       <div class="caption">On oublie jamais la famille avec un grand sourire ❤️</div>
     </div>
   </section>
-      <a href="souvenirs.html" class="btn">Voir la frise de souvenirs 📸</a>
-      <a href="lettre.html" class="btn">💌 Lire ma lettre</a>
+
+  <div class="cta-container">
+    <a href="souvenirs.html" class="btn btn-solid">
+      <i class="fas fa-camera-retro"></i> Voir la frise de souvenirs
+    </a>
+    <a href="lettre.html" class="btn">
+      <i class="fas fa-envelope-open-heart"></i> Petite surprise
+    </a>
+  </div>
 
   <footer>
     Fait avec tout mon amour 💕 — Ton tout petit enfant qui grandit
   </footer>
-  <!-- 🎧 Musique de fond -->
 
+  <div id="lightbox" class="hidden">
+    <img id="lightbox-img" src="" alt="agrandi">
+    <p style="color: white; margin-top: 20px; font-style: italic;">Tu te souviens ? ❤️</p>
+  </div>
 
-
-<style>
-  #music-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(214, 51, 132, 0.9);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 1.4rem;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    transition: background 0.3s ease, transform 0.2s ease;
-    z-index: 100;
-  }
-
-  #music-btn:hover {
-    background: rgba(183, 43, 108, 0.95);
-    transform: scale(1.05);
-  }
-</style>
-<!-- 🌸 Effet de pétales roses -->
-<canvas id="petals"></canvas>
-
-<script>
-  const canvas = document.getElementById("petals");
-  const ctx = canvas.getContext("2d");
-
-  let width = window.innerWidth;
-  let height = window.innerHeight;
-  canvas.width = width;
-  canvas.height = height;
-
-  const petals = [];
-  const numPetals = 50;
-
-  for (let i = 0; i < numPetals; i++) {
-    petals.push({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      size: Math.random() * 6 + 3,
-      speedY: Math.random() * 0.8 + 0.3,
-      speedX: Math.random() * 0.6 - 0.3,
-      opacity: Math.random() * 0.5 + 0.4,
-      rotation: Math.random() * 360,
-      rotationSpeed: Math.random() * 2 - 1
-    });
-  }
-
-  function drawPetals() {
-    ctx.clearRect(0, 0, width, height);
-    for (const p of petals) {
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate((p.rotation * Math.PI) / 180);
-
-      const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, p.size * 1.5);
-      gradient.addColorStop(0, `rgba(255, 182, 193, ${p.opacity + 0.3})`);
-      gradient.addColorStop(1, `rgba(255, 182, 193, 0)`);
-
-      ctx.beginPath();
-      ctx.ellipse(0, 0, p.size, p.size / 1.8, 0, 0, Math.PI * 2);
-      ctx.fillStyle = gradient;
-      ctx.fill();
-      ctx.restore();
-
-      p.y += p.speedY;
-      p.x += p.speedX;
-      p.rotation += p.rotationSpeed;
-
-      if (p.y > height + 10) {
-        p.y = -10;
-        p.x = Math.random() * width;
-      }
-    }
-    requestAnimationFrame(drawPetals);
-  }
-
-  drawPetals();
-
-  window.addEventListener("resize", () => {
-    width = window.innerWidth;
-    height = window.innerHeight;
+  <script>
+    // --- GESTION DES PÉTALES (Ton code original préservé) ---
+    const canvas = document.getElementById("petals");
+    const ctx = canvas.getContext("2d");
+    let width = window.innerWidth;
+    let height = window.innerHeight;
     canvas.width = width;
     canvas.height = height;
-  });
-</script>
+    const petals = [];
+    for (let i = 0; i < 50; i++) {
+      petals.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 6 + 3,
+        speedY: Math.random() * 0.8 + 0.3,
+        speedX: Math.random() * 0.6 - 0.3,
+        opacity: Math.random() * 0.5 + 0.4,
+        rotation: Math.random() * 360,
+        rotationSpeed: Math.random() * 2 - 1
+      });
+    }
 
-<style>
-  #petals {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-  }
-</style>
-<!-- 💖 Effet photo plein écran -->
-<div id="lightbox" class="hidden">
-  <div class="lightbox-bg"></div>
-  <img id="lightbox-img" src="" alt="photo agrandie">
-  <p class="lightbox-text">Tu te souviens ? ❤️</p>
-</div>
+    function drawPetals() {
+      ctx.clearRect(0, 0, width, height);
+      for (const p of petals) {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, p.size * 1.5);
+        gradient.addColorStop(0, `rgba(255, 182, 193, ${p.opacity + 0.3})`);
+        gradient.addColorStop(1, `rgba(255, 182, 193, 0)`);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, p.size, p.size / 1.8, 0, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+        ctx.restore();
+        p.y += p.speedY; p.x += p.speedX; p.rotation += p.rotationSpeed;
+        if (p.y > height + 10) { p.y = -10; p.x = Math.random() * width; }
+      }
+      requestAnimationFrame(drawPetals);
+    }
+    drawPetals();
 
-<style>
-  #lightbox {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(8px);
-    z-index: 200;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
-  }
+    // --- LIGHTBOX ---
+    const images = document.querySelectorAll('.photo-card img');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
 
-  #lightbox.visible {
-    opacity: 1;
-    pointer-events: all;
-  }
-
-  #lightbox-img {
-    max-width: 90%;
-    max-height: 70vh;
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-    animation: fadeIn 0.5s ease;
-  }
-
-  .lightbox-text {
-    margin-top: 20px;
-    color: #e6f0ff;
-    font-size: 1.3rem;
-    font-style: italic;
-    text-shadow: 0 0 8px rgba(255,255,255,0.2);
-    animation: fadeIn 0.8s ease 0.2s both;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
-  }
-
-  .hidden {
-    display: none;
-  }
-</style>
-
-<script>
-  const photos = document.querySelectorAll('.photo img');
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightbox-img');
-
-  photos.forEach(img => {
-    img.addEventListener('click', () => {
-      lightboxImg.src = img.src;
-      lightbox.classList.remove('hidden');
-      setTimeout(() => lightbox.classList.add('visible'), 10);
+    images.forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.classList.remove('hidden');
+        setTimeout(() => lightbox.classList.add('visible'), 10);
+      });
     });
-  });
 
-  // Fermer au clic sur le fond
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox || e.target.classList.contains('lightbox-bg')) {
+    lightbox.addEventListener('click', () => {
       lightbox.classList.remove('visible');
       setTimeout(() => lightbox.classList.add('hidden'), 400);
-    }
-  });
-</script>
+    });
 
+    window.addEventListener("resize", () => {
+      width = window.innerWidth; height = window.innerHeight;
+      canvas.width = width; canvas.height = height;
+    });
+  </script>
 </body>
 </html>

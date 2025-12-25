@@ -1,222 +1,227 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Lettre pour Maman 💌</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Lettre pour Maman 💌</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,600&family=Open+Sans:wght@400;600&family=Dancing+Script:wght@600&display=swap');
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Open+Sans&display=swap');
+    :root {
+      --pink: #d63384;
+      --soft-pink: #ffe6f0;
+      --white: #fffaf9;
+    }
 
-/* 🌸 Reset et style global */
-body {
-  margin: 0;
-  font-family: 'Open Sans', sans-serif;
-  color: #333;
-  text-align: center;
-  background: linear-gradient(180deg, #fff0f6, #ffe6f0);
-  overflow-x: hidden;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  z-index: 1;
-}
+    body {
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      color: #333;
+      background: #1a1a1a; /* Fond sombre pour faire ressortir les photos */
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-h1 {
-  font-family: 'Playfair Display', serif;
-  color: #d63384;
-  font-size: 2.2rem;
-  margin-bottom: 30px;
-  z-index: 2;
-}
+    /* --- DIAPORAMA DE FOND --- */
+    #background-images {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+    .bg-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 2s ease-in-out, transform 6s linear;
+      filter: brightness(0.6) blur(2px);
+    }
+    .bg-img.active {
+      opacity: 0.4;
+      transform: scale(1.1);
+    }
 
-/* 🌸 Envelope interactif */
-.envelope {
-  font-size: 4rem;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  z-index: 2;
-}
-.envelope:hover {
-  transform: scale(1.1);
-}
+    /* --- CONTENEUR PRINCIPAL --- */
+    .main-container {
+      position: relative;
+      z-index: 10;
+      width: 90%;
+      max-width: 650px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-/* 🌸 Lettre */
-.letter {
-  position: relative;
-  max-width: 600px;
-  background: #fffaf9;
-  border: 1px solid #f3d4d4;
-  border-radius: 12px;
-  padding: 30px 40px;
-  margin-top: 30px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 1.2s ease, transform 1.2s ease;
-  font-size: 1.05rem;
-  line-height: 1.6;
-  text-align: left;
-  background-image: repeating-linear-gradient(#fffaf9, #fffaf9 28px, #ffe6f0 29px);
-  z-index: 2;
-}
-.letter.show {
-  opacity: 1;
-  transform: translateY(0);
-}
+    h1 {
+      font-family: 'Playfair Display', serif;
+      color: white;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      margin-bottom: 50px;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+    }
 
-.signature {
-  margin-top: 20px;
-  text-align: right;
-  font-style: italic;
-  color: #d63384;
-}
+    /* --- ENVELOPPE ANIMÉE --- */
+    .envelope-wrapper {
+      cursor: pointer;
+      perspective: 1000px;
+      transition: transform 0.5s ease;
+    }
+    .envelope-wrapper:hover { transform: scale(1.05); }
 
-/* 🌸 Bouton retour */
-.back-btn {
-  margin-top: 40px;
-  display: inline-block;
-  background: #d63384;
-  color: white;
-  text-decoration: none;
-  padding: 10px 22px;
-  border-radius: 8px;
-  transition: background 0.3s ease;
-  z-index: 2;
-}
-.back-btn:hover {
-  background: #b72b6c;
-}
+    .envelope-icon {
+      font-size: 100px;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+      animation: float 3s ease-in-out infinite;
+    }
 
-/* 🌸 Musique */
-#music-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: rgba(214, 51, 132, 0.9);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 1.4rem;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  transition: background 0.3s ease, transform 0.2s ease;
-  z-index: 3;
-}
-#music-btn:hover {
-  background: rgba(183, 43, 108, 0.95);
-  transform: scale(1.05);
-}
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
 
-/* 🌸 Pétales */
-#petals {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
+    /* --- LA LETTRE --- */
+    .letter {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -45%) scale(0.8);
+      width: 100%;
+      background: var(--white);
+      padding: 40px;
+      border-radius: 5px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      max-height: 80vh;
+      overflow-y: auto;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(214, 51, 132, 0.05) 0, transparent 50%),
+        repeating-linear-gradient(transparent, transparent 30px, #e5e5e5 31px);
+      line-height: 31px;
+    }
 
-/* 🌸 Images de fond */
-#background-images {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  overflow: hidden;
-}
-.bg-img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: auto;
-  height: 100%;
-  transform: translate(-50%, -50%);
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 2s ease-in-out;
-  filter: blur(3px);
-}
+    .letter.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      pointer-events: all;
+    }
 
-@media (max-aspect-ratio: 1/1) {
-  .bg-img {
-    width: 100%;
-    height: auto;
-  }
-}
+    .letter-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.5rem;
+      color: #444;
+      white-space: pre-wrap;
+      margin-top: 10px;
+    }
 
-.bg-img.active {
-  opacity: 0.25; /* transparence douce pour texte lisible */
-}
+    .wax-seal {
+      display: block;
+      margin: 30px auto 0;
+      width: 60px;
+      height: 60px;
+      background: #b01b1b;
+      border-radius: 50%;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 5px 10px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffd700;
+      font-size: 1.5rem;
+      font-family: 'Playfair Display', serif;
+    }
 
-/* 🌸 Texte de la lettre */
-#texte-lettre {
-  white-space: pre-wrap;
-}
-</style>
+    /* --- BOUTON RETOUR --- */
+    .back-btn {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      color: white;
+      text-decoration: none;
+      padding: 12px 25px;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.3);
+      transition: all 0.3s;
+      font-weight: 600;
+      z-index: 100;
+    }
+    .back-btn:hover { background: var(--pink); border-color: var(--pink); }
+
+    canvas#petals {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .hidden { display: none !important; }
+  </style>
 </head>
 <body>
 
-<h1>Une lettre pour toi, Maman 💌</h1>
-<div class="envelope" id="openLetter">💌</div>
-
-<!-- 🌸 Images de fond -->
 <div id="background-images">
   <img src="photo1.jpg" class="bg-img active">
   <img src="photo2.jpg" class="bg-img">
   <img src="photo3.jpg" class="bg-img">
-    <img src="photo4.jpg" class="bg-img">
+  <img src="photo4.jpg" class="bg-img">
   <img src="photo5.jpg" class="bg-img">
-    <img src="photo6.jpg" class="bg-img">
+  <img src="photo6.jpg" class="bg-img">
   <img src="photo7.jpg" class="bg-img">
-
-    <img src="photo10.jpg" class="bg-img">
+  <img src="photo10.jpg" class="bg-img">
   <img src="photo11.jpg" class="bg-img">
-    <img src="photo12.jpg" class="bg-img">
+  <img src="photo12.jpg" class="bg-img">
   <img src="photo13.jpg" class="bg-img">
 </div>
 
-<div class="letter" id="letterContent">
-  <p id="texte-lettre">
-Chère Maman,
+<div class="main-container">
+  <h1 id="title">Une surprise pour toi...</h1>
+  
+  <div class="envelope-wrapper" id="openLetter">
+    <div class="envelope-icon">✉️</div>
+  </div>
 
-Il y a tant de choses que je n’ai jamais su te dire à voix haute.
+  <div class="letter" id="letterContent">
+    <div class="letter-text" id="texte-lettre">Chère Maman,
+
+Il y a tant de choses que je n’ai jamais pu te dire à voix haute.
 Merci pour ta douceur, ta patience, et pour tous les petits gestes qui ont construit qui je suis aujourd’hui.
-Chaque souvenir avec toi me rappelle que l’amour, le vrai, ne se dit pas toujours : il se montre, jour après jour, avec le cœur.
-Je t’aime, tout simplement. 
+Chaque souvenir avec toi me rappelle que l’amour, ne se dit pas toujours : il se montre, jour après jour, avec le cœur.
+Je t’aime, tout simplement et honnêtement, merci maman.
 
-— Lubin 💖
-  </p>
+— Lubin 💖</div>
+    <div class="wax-seal">L</div>
+  </div>
 </div>
 
-<a class="back-btn" href="index.html">← Retour à la page principale</a>
+<a class="back-btn" href="index.html">← Revenir à l'accueil</a>
 
-
-
-<!-- 🌸 Pétales -->
 <canvas id="petals"></canvas>
 
 <script>
-// 🌸 Typewriter pour la lettre
+// --- GESTION DE LA LETTRE ---
 const envelope = document.getElementById('openLetter');
 const letter = document.getElementById('letterContent');
 const textElement = document.getElementById('texte-lettre');
+const title = document.getElementById('title');
 const fullText = textElement.innerHTML;
 textElement.innerHTML = "";
 
 envelope.addEventListener('click', () => {
-  letter.classList.add('show');
-  envelope.style.display = 'none';
-  typeWriter();
+  envelope.style.opacity = '0';
+  title.style.opacity = '0';
+  setTimeout(() => {
+    envelope.classList.add('hidden');
+    letter.classList.add('show');
+    typeWriter();
+  }, 500);
 });
 
 let index = 0;
@@ -224,64 +229,59 @@ function typeWriter() {
   if (index < fullText.length) {
     textElement.innerHTML += fullText.charAt(index);
     index++;
-    setTimeout(typeWriter, 35);
+    setTimeout(typeWriter, 40);
   }
 }
 
-
-
-// 🌸 Pétales
-const canvas = document.getElementById("petals");
-const ctx = canvas.getContext("2d");
-let width = window.innerWidth;
-let height = window.innerHeight;
-canvas.width = width;
-canvas.height = height;
-
-const petals = [];
-const numPetals = 50;
-for (let i=0;i<numPetals;i++){
-  petals.push({
-    x: Math.random()*width,
-    y: Math.random()*height,
-    size: Math.random()*6+3,
-    speedY: Math.random()*0.8+0.3,
-    speedX: Math.random()*0.6-0.3,
-    opacity: Math.random()*0.5+0.4,
-    rotation: Math.random()*360,
-    rotationSpeed: Math.random()*2-1
-  });
-}
-function drawPetals(){
-  ctx.clearRect(0,0,width,height);
-  for(const p of petals){
-    ctx.save();
-    ctx.translate(p.x,p.y);
-    ctx.rotate((p.rotation*Math.PI)/180);
-    const gradient = ctx.createRadialGradient(0,0,0,0,0,p.size*1.5);
-    gradient.addColorStop(0,`rgba(255,182,193,${p.opacity+0.3})`);
-    gradient.addColorStop(1,`rgba(255,182,193,0)`);
-    ctx.beginPath();
-    ctx.ellipse(0,0,p.size,p.size/1.8,0,0,Math.PI*2);
-    ctx.fillStyle=gradient;
-    ctx.fill();
-    ctx.restore();
-    p.y+=p.speedY; p.x+=p.speedX; p.rotation+=p.rotationSpeed;
-    if(p.y>height+10){ p.y=-10; p.x=Math.random()*width; }
-  }
-  requestAnimationFrame(drawPetals);
-}
-drawPetals();
-window.addEventListener("resize",()=>{ width=window.innerWidth; height=window.innerHeight; canvas.width=width; canvas.height=height; });
-
-// 🌸 Images de fond dynamique
+// --- DIAPORAMA ---
 const bgImages = document.querySelectorAll('.bg-img');
 let current = 0;
-setInterval(() => {
+function nextImage() {
   bgImages[current].classList.remove('active');
-  current = (current+1)%bgImages.length;
+  current = (current + 1) % bgImages.length;
   bgImages[current].classList.add('active');
-}, 2000); // toutes les 2 secondes
+}
+setInterval(nextImage, 4000);
+
+// --- PÉTALES ---
+const canvas = document.getElementById("petals");
+const ctx = canvas.getContext("2d");
+let width = canvas.width = window.innerWidth;
+let height = canvas.height = window.innerHeight;
+
+const petals = Array.from({ length: 40 }, () => ({
+  x: Math.random() * width,
+  y: Math.random() * height,
+  size: Math.random() * 5 + 2,
+  speedY: Math.random() * 1 + 0.5,
+  speedX: Math.random() * 1 - 0.5,
+  opacity: Math.random() * 0.6 + 0.2,
+  rotation: Math.random() * 360,
+  rotationSpeed: Math.random() * 2 - 1
+}));
+
+function draw() {
+  ctx.clearRect(0, 0, width, height);
+  petals.forEach(p => {
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rotation * Math.PI / 180);
+    ctx.fillStyle = `rgba(255, 182, 193, ${p.opacity})`;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, p.size, p.size/1.5, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+    p.y += p.speedY; p.x += p.speedX; p.rotation += p.rotationSpeed;
+    if (p.y > height) { p.y = -10; p.x = Math.random() * width; }
+  });
+  requestAnimationFrame(draw);
+}
+draw();
+
+window.onresize = () => {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+};
 </script>
 
 </body>

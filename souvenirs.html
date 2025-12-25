@@ -4,8 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Souvenirs avec Maman 💖</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Open+Sans&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&family=Open+Sans&family=Caveat&display=swap');
 
     :root {
       --accent: #d63384;
@@ -13,10 +14,11 @@
       --bg-end: #ffe6f0;
       --card-bg: #ffffff;
       --max-w: 900px;
-      --line-width: 4px;
+      --line-width: 6px; /* Ligne plus épaisse ici */
     }
 
     * { box-sizing: border-box; }
+    
     body {
       margin: 0;
       font-family: 'Open Sans', sans-serif;
@@ -24,221 +26,148 @@
       color: #333;
       text-align: center;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
     }
+
+    .fade-in-content { animation: fadeInEffect 1.5s ease-out; }
+    @keyframes fadeInEffect { from { opacity: 0; } to { opacity: 1; } }
+
+    .home-btn {
+      position: fixed; top: 20px; left: 20px;
+      background: white; color: var(--accent);
+      width: 50px; height: 50px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; box-shadow: 0 4px 15px rgba(214, 51, 132, 0.2);
+      z-index: 1000; transition: transform 0.3s ease;
+      font-size: 1.6rem; border: 2px solid var(--accent);
+    }
+    .home-btn:hover { transform: scale(1.1); }
 
     header {
-      padding: 36px 18px 8px;
+      padding: 80px 18px 20px;
       font-family: 'Playfair Display', serif;
-      font-size: 2rem;
+      font-size: 2.5rem;
       color: var(--accent);
+      font-style: italic;
     }
 
+    /* --- TIMELINE --- */
     .timeline {
       position: relative;
       max-width: var(--max-w);
-      margin: 40px auto 20px;
-      padding: 20px 20px 60px;
-      width: 100%;
+      margin: 40px auto 0;
+      padding: 20px 20px 100px;
     }
 
     .timeline::after {
       content: '';
       position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      top: 0;
-      bottom: 0;
+      left: 50%; transform: translateX(-50%);
+      top: 0; bottom: 0;
       width: var(--line-width);
-      background: var(--accent);
-      border-radius: 2px;
+      /* Dégradé pour une ligne élégante qui s'efface en bas */
+      background: linear-gradient(to bottom, var(--accent), #ff85a1, transparent);
       z-index: 1;
+      opacity: 0.5; /* Opacité légèrement augmentée pour marquer l'épaisseur */
     }
 
     .container {
       position: relative;
       width: 50%;
-      padding: 18px 24px;
-      margin-bottom: 40px;
+      padding: 20px 40px;
+      margin-bottom: 60px;
+      z-index: 2;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s ease-out;
+    }
+    
+    .container.appear { opacity: 1; transform: translateY(0); }
+
+    .container.left { left: 0; text-align: right; }
+    .container.right { left: 50%; text-align: left; }
+
+    /* --- EFFET POLAROID --- */
+    .polaroid {
+      background: white;
+      padding: 12px 12px 35px 12px;
+      border-radius: 2px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      display: inline-block;
+      transition: transform 0.3s ease;
+      max-width: 320px;
+    }
+    
+    .container.left .polaroid { transform: rotate(-2deg); }
+    .container.right .polaroid { transform: rotate(2deg); }
+    
+    .polaroid:hover {
+      transform: scale(1.05) rotate(0deg) !important;
+      z-index: 10;
     }
 
-    .container.left {
-      left: 0;
-      text-align: right;
-      padding-right: 40px;
-    }
-
-    .container.right {
-      left: 50%;
-      text-align: left;
-      padding-left: 40px;
+    .polaroid img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+      border: 1px solid #eee;
     }
 
     .text-box {
-      display: inline-block;
-      max-width: 420px;
-      margin-bottom: 12px;
-      background: var(--card-bg);
-      padding: 14px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      font-style: normal;
+      margin-bottom: 20px;
     }
 
     .text-box h3 {
-      margin: 0 0 6px;
-      font-size: 1.05rem;
-      color: var(--accent);
+      margin: 0 0 8px;
       font-family: 'Playfair Display', serif;
+      color: var(--accent);
+      font-size: 1.3rem;
     }
 
     .text-box p {
       margin: 0;
-      color: #444;
-      line-height: 1.45;
+      font-size: 0.95rem;
+      color: #666;
+      line-height: 1.5;
     }
 
-.container img {
-  display: block;
-  width: 100%;
-  height: 180px;  /* réduit de 220px à 180px */
-  object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-  cursor: pointer;
-  transition: transform 0.3s;
-}
-
-@media (max-width: 768px) {
-  .container img {
-    height: 150px; /* réduit de 200px à 150px sur mobile */
-  }
-}
-
-
-    .container img:hover {
-      transform: scale(1.02);
-    }
-
-    /* Cercle de timeline aligné sur la bulle */
-    .container::after {
-      content: '';
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: var(--accent);
-      border: 4px solid #fff;
-      border-radius: 50%;
-      z-index: 2;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      top: calc(50% - 10px);
-    }
-
-    .container.left::after { right: -10px; }
-    .container.right::after { left: -10px; }
-
-    .back-btn {
-      display: inline-block;
-      margin: 18px auto 50px;
-      padding: 12px 22px;
-      background: var(--accent);
-      color: white;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-
-    .back-btn:hover {
+    .timeline-end {
+      font-family: 'Caveat', cursive;
+      font-size: 2.2rem;
+      color: var(--accent);
+      margin: 40px 0 80px;
       opacity: 0.9;
-      transform: scale(1.02);
+      animation: softPulse 2s infinite ease-in-out;
+    }
+
+    @keyframes softPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
     }
 
     @media (max-width: 768px) {
-      .timeline { padding-left: 80px; }
-      .timeline::after { left: 60px; transform: none; }
-      .container { width: 100%; padding: 12px 18px 12px 28px; text-align: left; }
+      .timeline::after { left: 30px; transform: none; }
+      .container { width: 100%; padding: 20px 20px 20px 60px; text-align: left !important; }
       .container.left, .container.right { left: 0; }
-      .container.left { padding-right: 18px; }
-      .container::after { left: 52px; top: 22px; }
-      .text-box { max-width: 100%; margin-bottom: 10px; }
-      .container img { height: 200px; }
+      .polaroid { transform: rotate(0deg) !important; max-width: 100%; }
     }
 
-    /* Lightbox */
     #lightbox {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(8px);
-      z-index: 200;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
+      position: fixed; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+      z-index: 2000; opacity: 0; pointer-events: none; transition: 0.4s;
     }
-    #lightbox.visible {
-      opacity: 1;
-      pointer-events: all;
-    }
-    #lightbox-img {
-      max-width: 90%;
-      max-height: 70vh;
-      border-radius: 15px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-      animation: fadeIn 0.5s ease;
-    }
-    .lightbox-text {
-      margin-top: 20px;
-      color: #e6f0ff;
-      font-size: 1.3rem;
-      font-style: italic;
-      text-shadow: 0 0 8px rgba(255,255,255,0.2);
-      animation: fadeIn 0.8s ease 0.2s both;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
+    #lightbox.visible { opacity: 1; pointer-events: all; }
+    #lightbox img { max-width: 90%; max-height: 80vh; border: 10px solid white; border-bottom: 50px solid white; }
 
-    /* Musique bouton */
-    #music-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(214, 51, 132, 0.9);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      font-size: 1.4rem;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      transition: background 0.3s ease, transform 0.2s ease;
-      z-index: 100;
-    }
-    #music-btn:hover {
-      background: rgba(183, 43, 108, 0.95);
-      transform: scale(1.05);
-    }
-
-    /* Petals */
-    #petals {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-    }
+    #petals { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
   </style>
 </head>
-<body>
+<body class="fade-in-content">
+
+  <a href="index.html" class="home-btn" title="Retour à l'accueil">🏠</a>
 
   <header>Souvenirs avec Maman 💖</header>
 
@@ -248,7 +177,9 @@
         <h3>Les Débuts</h3>
         <p>On était tout mignon et tout jeune</p>
       </div>
-      <img src="photo4.jpg" alt="Photo - Nos débuts">
+      <div class="polaroid">
+        <img src="photo4.jpg" alt="Photo">
+      </div>
     </div>
 
     <div class="container right">
@@ -256,104 +187,202 @@
         <h3>Les Bons Moments</h3>
         <p>Y'a eu ce petit loulou qui nous a bien fait rire</p>
       </div>
-      <img src="photo5.jpg" alt="Photo - Les rires">
+      <div class="polaroid">
+        <img src="photo5.jpg" alt="Photo">
+      </div>
     </div>
 
     <div class="container left">
       <div class="text-box">
-        <h3>Toujours le monsieur chauve que j'aime bien</h3>
-        <p>Parce que même si il râle tout le temps, je l'aime beaucoup ton frère</p>
+        <h3>Le monsieur chauve</h3>
+        <p>Parce que même s'il râle, je l'aime beaucoup ton frère</p>
       </div>
-      <img src="photo6.jpg" alt="Photo - Les moments tendres">
+      <div class="polaroid">
+        <img src="photo6.jpg" alt="Photo">
+      </div>
     </div>
 
     <div class="container right">
       <div class="text-box">
-        <h3>Mais aussi ma mamie, ta maman</h3>
-        <p>Qui m'a beaucoup donné dans la vie, que j'aime de tout mon coeur</p>
+        <h3>Ma mamie, ta maman</h3>
+        <p>Qui m'a tant donné, que j'aime de tout mon coeur</p>
       </div>
-      <img src="photo7.jpg" alt="Photo - Les leçons">
+      <div class="polaroid">
+        <img src="photo7.jpg" alt="Photo">
+      </div>
     </div>
 
     <div class="container left">
       <div class="text-box">
-        <h3>Et puis y'a eu les blessures</h3>
-        <p>Evidemment comment j'aurais pu ne pas y penser</p>
+        <h3>Les blessures</h3>
+        <p>Évidemment, comment ne pas y penser</p>
       </div>
-      <img src="photo8.jpg" alt="Photo - Aujourd'hui">
+      <div class="polaroid">
+        <img src="photo8.jpg" alt="Photo">
+      </div>
     </div>
 
     <div class="container right">
       <div class="text-box">
         <h3>Et rebelotte</h3>
-        <p>Jamais l'un sans l'autre même si je ne me suis pas arreter la</p>
+        <p>Jamais l'un sans l'autre...</p>
       </div>
-      <img src="photo9.png" alt="Photo - L’avenir">
+      <div class="polaroid">
+        <img src="photo9.png" alt="Photo">
+      </div>
     </div>
 
     <div class="container left">
       <div class="text-box">
         <h3>Hop un gros voyage</h3>
-        <p>Peut être que j'aime la bière a cause de ça..</p>
+        <p>Peut être que j'aime la bière à cause de ça...</p>
       </div>
-      <img src="photo10.jpg" alt="Photo - Aujourd'hui">
+      <div class="polaroid">
+        <img src="photo10.jpg" alt="Photo">
+      </div>
     </div>
 
     <div class="container right">
       <div class="text-box">
-        <h3>J'ai deja pas mal grandi la</h3>
-        <p>Ca change plutôt beaucoup la barbe </p>
+        <h3>Le rugby</h3>
+        <p>Toujours le sourire pour aller voir un match</p>
       </div>
-      <img src="photo11.jpg" alt="Photo - ">
+      <div class="polaroid">
+        <img src="photo11.jpg" alt="Photo">
+      </div>
     </div>
 
     <div class="container left">
       <div class="text-box">
-        <h3>Et voila que tu me rejoins dans mon pays froid</h3>
-        <p>C'était magique comme week end</p>
+        <h3>Ambiance plage</h3>
+        <p>Toujours chill ce mec en fait</p>
       </div>
-      <img src="photo12.jpg" alt="Photo - Aujourd'hui">
+      <div class="polaroid">
+        <img src="photo12.jpg" alt="Photo">
+      </div>
     </div>
 
     <div class="container right">
       <div class="text-box">
-        <h3>J'ai vraiment adoré </h3>
-        <p>Alors j'ai hate du prochain </p>
+        <h3>Qu'on est beau</h3>
+        <p>Peut être pas le tee-shirt mais bon !</p>
       </div>
-      <img src="photo13.jpg" alt="Photo - ">
+      <div class="polaroid">
+        <img src="photo13.jpg" alt="Photo">
+      </div>
+    </div>
+
+    <div class="container left">
+      <div class="text-box">
+        <h3>Nos petits repas</h3>
+        <p>Surtout si c'est devant le Stade ou la France</p>
+      </div>
+      <div class="polaroid">
+        <img src="photo14.jpg" alt="Photo">
+      </div>
+    </div>
+
+    <div class="container right">
+      <div class="text-box">
+        <h3>Les deux petits</h3>
+        <p>On a trop de flow tous les 3</p>
+      </div>
+      <div class="polaroid">
+        <img src="photo15.jpg" alt="Photo">
+      </div>
+    </div>
+
+    <div class="container left">
+      <div class="text-box">
+        <h3>Dans mon pays froid</h3>
+        <p>C'était magique comme week-end</p>
+      </div>
+      <div class="polaroid">
+        <img src="photo16.jpg" alt="Photo">
+      </div>
+    </div>
+
+    <div class="container right">
+      <div class="text-box">
+        <h3>J'ai vraiment adoré</h3>
+        <p>Alors j'ai hâte du prochain !</p>
+      </div>
+      <div class="polaroid">
+        <img src="photo17.jpg" alt="Photo">
+      </div>
     </div>
   </section>
 
-  <a class="back-btn" href="index.html">← Retour à la page principale</a>
-
-
-
-  <!-- Lightbox -->
-  <div id="lightbox" class="hidden">
-    <div class="lightbox-bg"></div>
-    <img id="lightbox-img" src="" alt="photo agrandie">
-    <p class="lightbox-text">Tu te souviens ? ❤️</p>
+  <div class="timeline-end">
+    Et ce n'est que le début... ❤️
   </div>
 
-  <!-- Petals -->
+  <div id="lightbox" class="hidden">
+    <img id="lightbox-img" src="" alt="Agrandissement">
+  </div>
+
   <canvas id="petals"></canvas>
 
   <script>
-    // Lightbox
-    const photos = document.querySelectorAll('.container img');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('appear');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.container').forEach(c => observer.observe(c));
+
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
-    photos.forEach(img => { img.addEventListener('click', () => { lightboxImg.src = img.src; lightbox.classList.remove('hidden'); setTimeout(()=>lightbox.classList.add('visible'),10); }); });
-    lightbox.addEventListener('click',(e)=>{ if(e.target===lightbox||e.target.classList.contains('lightbox-bg')){ lightbox.classList.remove('visible'); setTimeout(()=>lightbox.classList.add('hidden'),400); } });
+    document.querySelectorAll('.polaroid img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.classList.remove('hidden');
+        setTimeout(() => lightbox.classList.add('visible'), 10);
+      });
+    });
 
-    // Petals
-    const canvas = document.getElementById("petals"); const ctx = canvas.getContext("2d");
-    let width = window.innerWidth, height = window.innerHeight; canvas.width = width; canvas.height = height;
-    const petals=[]; for(let i=0;i<50;i++){ petals.push({ x:Math.random()*width, y:Math.random()*height, size:Math.random()*6+3, speedY:Math.random()*0.8+0.3, speedX:Math.random()*0.6-0.3, opacity:Math.random()*0.5+0.4, rotation:Math.random()*360, rotationSpeed:Math.random()*2-1 }); }
-    function drawPetals(){ ctx.clearRect(0,0,width,height); for(const p of petals){ ctx.save(); ctx.translate(p.x,p.y); ctx.rotate((p.rotation*Math.PI)/180); const gradient=ctx.createRadialGradient(0,0,0,0,0,p.size*1.5); gradient.addColorStop(0,`rgba(255,182,193,${p.opacity+0.3})`); gradient.addColorStop(1,`rgba(255,182,193,0)`); ctx.beginPath(); ctx.ellipse(0,0,p.size,p.size/1.8,0,0,Math.PI*2); ctx.fillStyle=gradient; ctx.fill(); ctx.restore(); p.y+=p.speedY; p.x+=p.speedX; p.rotation+=p.rotationSpeed; if(p.y>height+10){ p.y=-10; p.x=Math.random()*width; } } requestAnimationFrame(drawPetals); }
+    lightbox.addEventListener('click', () => {
+      lightbox.classList.remove('visible');
+      setTimeout(() => lightbox.classList.add('hidden'), 400);
+    });
+
+    const canvas = document.getElementById("petals");
+    const ctx = canvas.getContext("2d");
+    let width = window.innerWidth, height = window.innerHeight;
+    canvas.width = width; canvas.height = height;
+    const petals = [];
+    for(let i=0; i<50; i++) {
+      petals.push({
+        x: Math.random()*width, y: Math.random()*height,
+        size: Math.random()*6+3, speedY: Math.random()*0.8+0.3,
+        speedX: Math.random()*0.6-0.3, opacity: Math.random()*0.5+0.4,
+        rotation: Math.random()*360, rotationSpeed: Math.random()*2-1
+      });
+    }
+    function drawPetals() {
+      ctx.clearRect(0,0,width,height);
+      for(const p of petals) {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation*Math.PI)/180);
+        ctx.beginPath();
+        ctx.ellipse(0,0,p.size,p.size/1.8,0,0,Math.PI*2);
+        ctx.fillStyle = `rgba(255,182,193,${p.opacity})`;
+        ctx.fill();
+        ctx.restore();
+        p.y += p.speedY; p.x += p.speedX; p.rotation += p.rotationSpeed;
+        if(p.y > height+10) p.y = -10;
+      }
+      requestAnimationFrame(drawPetals);
+    }
     drawPetals();
-    window.addEventListener("resize",()=>{ width=window.innerWidth;height=window.innerHeight; canvas.width=width; canvas.height=height; });
+    window.addEventListener("resize", () => {
+      width = window.innerWidth; height = window.innerHeight;
+      canvas.width = width; canvas.height = height;
+    });
   </script>
-
 </body>
 </html>
